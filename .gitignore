@@ -1,3 +1,6 @@
+# ignore big data files
+data/
+
 
 # Python bytecode
 *.pyc
