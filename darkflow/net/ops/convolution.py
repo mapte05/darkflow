@@ -121,10 +121,10 @@ class fire(BaseOp): #todo: not sure if fire or baseop
 
     def forward(self):
         # first do s_1x1 with activation
-        s_1x1 = tf.nn.conv2d(input=self.inp.out, filter=[1,1, self.input_channels, self.s_1x1], strides=[1,1], padding='VALID')
+        s_1x1 = tf.nn.conv2d(input=self.inp.out, filter=[1,1, self.lay.input_channels, self.lay.s_1x1], strides=[1,1], padding='VALID')
         s_1x1 = tf.nn.relu(s_1x1)
-        e_1x1 = tf.nn.conv2d(input=s_1x1, filter=[1,1, self.s_1x1, self.e_1x1], strides=[1,1], padding='VALID')
-        e_3x3 = tf.nn.conv2d(input=s_1x1, filter=[3,3, self.s_1x1, self.e_3x3], strides=[1,1], padding='SAME')
+        e_1x1 = tf.nn.conv2d(input=s_1x1, filter=[1,1, self.lay.s_1x1, self.lay.e_1x1], strides=[1,1], padding='VALID')
+        e_3x3 = tf.nn.conv2d(input=s_1x1, filter=[3,3, self.lay.s_1x1, self.lay.e_3x3], strides=[1,1], padding='SAME')
         self.out = tf.concat([e_1x1, e_3x3], axis=-1) # assume channel axis is the last one
         print("wow")
 
