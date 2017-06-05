@@ -165,7 +165,7 @@ class fire_layer(Layer):
         self.s_1x1 = s_1x1
         self.e_1x1 = e_1x1
         self.e_3x3 = e_3x3
-        print("HOLYYY WOOW IN SETUP")
+        # print("HOLYYY WOOW IN SETUP")
         #TODO: call conv layers here??
 
 
