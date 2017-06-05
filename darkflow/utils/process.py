@@ -316,15 +316,15 @@ def cfg_yielder(model, binary):
 			s_1x1 = d.get('s_1x1', 16)
 			e_1x1 = d.get('e_1x1', 64)
 			e_3x3 = d.get('e_1x1', 64)
-			n = e_1x1 + e_3x3
+			n = e_1x1 + e_3x3 # concat the two
 			activation = d.get('activation', 'relu')
-			yield ['fire', i, c, n, e_1x1, e_3x3, activation]
+			yield ['fire', i, c, n, s_1x1, e_1x1, e_3x3, activation]
 			if activation != 'linear': yield [activation, i]
 			c = n
 			# don't need to reset width and hidth
 			l = w * h * c
-			print("HOLY WOWW")
-			print("s_1x1: %f, e_1x1: %f, e_3x3: %f" % (s_1x1, e_1x1, e_3x3))
+			# print("HOLY WOWW")
+			# print("s_1x1: %f, e_1x1: %f, e_3x3: %f" % (s_1x1, e_1x1, e_3x3))
 
 		#-----------------------------------------------------
 		else:

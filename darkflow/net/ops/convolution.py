@@ -114,3 +114,15 @@ class conv_extract(convolutional):
         args += [l.activation]
         msg = 'extr {}x{}p{}_{}  {}  {}'.format(*args)
         return msg
+
+class fire(BaseOp): #todo: not sure if fire or baseop
+    def speak(self):
+        return "on fireeee"
+
+
+
+
+
+
+
+
