@@ -121,6 +121,7 @@ class fire(BaseOp): #todo: not sure if fire or baseop
 
     def forward(self):
         # first do s_1x1 with activation
+        print(self.inp.out.get_shape())
         s_1x1 = tf.nn.conv2d(input=self.inp.out, filter=[1,1, self.lay.input_channels, self.lay.s_1x1], strides=[1,1], padding='VALID')
         s_1x1 = tf.nn.relu(s_1x1)
         e_1x1 = tf.nn.conv2d(input=s_1x1, filter=[1,1, self.lay.s_1x1, self.lay.e_1x1], strides=[1,1], padding='VALID')
