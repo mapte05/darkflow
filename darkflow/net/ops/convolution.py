@@ -123,7 +123,8 @@ class fire(BaseOp): #todo: not sure if fire or baseop
         # first do s_1x1 with activation
         print(self.inp.out.get_shape())
         print(tf.rank(self.inp.out))
-        temp = tf.pad(self.inp.out, [[0,0],[0,0]])
+        pad = [[0, 0]] * 2 # LOL HACKKKK
+        temp = tf.pad(self.inp.out, [[0, 0]] + pad + [[0, 0]])
         print(temp)
         s_1x1 = tf.nn.conv2d(temp, filter=[1,1, self.lay.input_channels, self.lay.s_1x1], strides=[1,1,1,1], padding='VALID')
         s_1x1 = tf.nn.relu(s_1x1)
