@@ -317,7 +317,7 @@ def cfg_yielder(model, binary):
 			e_1x1 = d.get('e_1x1', 64)
 			e_3x3 = d.get('e_1x1', 64)
 			n = e_1x1 + e_3x3 # concat the two
-			activation = d.get('activation', 'relu')
+			activation = d.get('activation', 'leaky')
 			yield ['fire', i, c, n, s_1x1, e_1x1, e_3x3, activation]
 			if activation != 'linear': yield [activation, i]
 			c = n
