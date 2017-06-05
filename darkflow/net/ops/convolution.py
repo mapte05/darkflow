@@ -114,3 +114,36 @@ class conv_extract(convolutional):
         args += [l.activation]
         msg = 'extr {}x{}p{}_{}  {}  {}'.format(*args)
         return msg
+
+class fire(BaseOp): #todo: not sure if fire or baseop
+    def speak(self):
+        return "on fireeee"
+
+    def forward(self):
+        # first do s_1x1 with activation
+        # print(self.inp.out.get_shape())
+        # print(tf.rank(self.inp.out))
+        # pad = [[0, 0]] * 2 # LOL HACKKKK
+        # temp = tf.pad(self.inp.out, [[0, 0]] + pad + [[0, 0]])
+        # print(temp)
+        # s_1x1 = tf.nn.conv2d(temp, filter=[1,1, self.lay.input_channels, self.lay.s_1x1], strides=[1,1,1,1], padding='VALID')
+        s_1x1 = tf.layers.conv2d(self.inp.out, filters=self.lay.s_1x1, kernel_size=[1,1], strides=(1, 1), padding='valid')
+        s_1x1 = tf.nn.relu(s_1x1)
+        e_1x1 = tf.layers.conv2d(s_1x1, filters=self.lay.e_1x1, kernel_size=[1,1], strides=(1, 1), padding='valid')
+        e_3x3 = tf.layers.conv2d(s_1x1, filters=self.lay.e_3x3, kernel_size=[3,3], strides=(1, 1), padding='same')
+
+        # e_1x1 = tf.nn.conv2d(input=s_1x1, filter=[1,1, self.lay.s_1x1, self.lay.e_1x1], strides=[1,1,1,1], padding='VALID')
+        # e_3x3 = tf.nn.conv2d(input=s_1x1, filter=[3,3, self.lay.s_1x1, self.lay.e_3x3], strides=[1,1,1,1], padding='SAME')
+        self.out = tf.concat([e_1x1, e_3x3], axis=-1) # assume channel axis is the last one
+        print("wow")
+
+
+
+
+
+
+
+
+
+
+

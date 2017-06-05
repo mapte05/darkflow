@@ -154,3 +154,19 @@ class convolutional_layer(Layer):
         kernel = kernel.reshape(self.dnshape)
         kernel = kernel.transpose([2,3,1,0])
         self.w['kernel'] = kernel
+
+class fire_layer(Layer):
+    print("HOLYYY WOOW")
+
+    def setup(self, c, n, s_1x1, e_1x1, e_3x3, activation):
+        self.activation = activation
+        self.input_channels = c
+        self.out_channels = n
+        self.s_1x1 = s_1x1
+        self.e_1x1 = e_1x1
+        self.e_3x3 = e_3x3
+        # print("HOLYYY WOOW IN SETUP")
+        #TODO: call conv layers here??
+
+
+
