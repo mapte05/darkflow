@@ -31,7 +31,7 @@ def load_from_ckpt(self):
     load_point = '{}-{}'.format(load_point, self.FLAGS.load)
     self.say('Loading from {}'.format(load_point))
     try:
-        PRINT("WELL...")
+        print("WELL...")
         self.saver.restore(self.sess, load_point)
     except:
         print("YOU ARE A LIAR")
