@@ -86,6 +86,7 @@ class checkpoint_loader(loader):
         meta = ckpt + '.meta'
         with tf.Graph().as_default() as graph:
             with tf.Session().as_default() as sess:
+                print("meta: %s" % meta)
                 saver = tf.train.import_meta_graph(meta)
                 saver.restore(sess, ckpt)
                 for var in tf.global_variables():
