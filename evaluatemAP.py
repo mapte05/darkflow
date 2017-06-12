@@ -18,8 +18,8 @@
     cachedir = 'cache'
     classes = ["aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat", "chair", "cow", "diningtable", "dog", "horse", "motorbike", "person", "pottedplant", "sheep", "sofa", "train", "tvmonitor"]
 
+    # Parses the VOC XML files
     def parse_rec(filename):
-        """ Parse a PASCAL VOC xml file """
         tree = ET.parse(filename)
         objects = []
         for obj in tree.findall('object'):
@@ -34,9 +34,9 @@
                                   int(bbox.find('xmax').text),
                                   int(bbox.find('ymax').text)]
             objects.append(obj_struct)
-
         return objects
 
+    # Parses the predictions made by darkflow
     def parse_pred(imagesetfile, predpath):
         unaccounted_files = 0
         json_store = collections.defaultdict(list)
@@ -45,6 +45,7 @@
         imagenames = [x.strip() for x in lines]
         for image in imagenames:
             image_json_path = predpath + image + '.json'
+            # try catch statements needed for files that didn't fully go through prediction
             try:
                 with open(image_json_path) as json_data:
                     try:
@@ -64,14 +65,9 @@
                 continue
         return json_store
 
-
-    def voc_ap(rec, prec, use_07_metric=False):
-        """ ap = voc_ap(rec, prec, [use_07_metric])
-        Compute VOC AP given precision and recall.
-        If use_07_metric is true, uses the
-        VOC 07 11 point method (default:False).
-        """
-        if use_07_metric:
+    # Compute VOC AP given preicision and recall
+    def voc_ap(rec, prec, 07_metric=False):
+        if 07_metric:
             # 11 point metric
             ap = 0.
             for t in np.arange(0., 1.1, 0.1):
@@ -97,7 +93,13 @@
             # and sum (\Delta recall) * prec
             ap = np.sum((mrec[i + 1] - mrec[i]) * mpre[i + 1])
         return ap
-
+    # Top level function for evaluating VOC
+    # Params
+    #   detpath: path to directory containing predictions
+    #   annopath: path to directory containing original VOC annotations
+    #   imagesetfile: path to file containing a list of all images used for training
+    #   classname: the particular class being evaluated (dog, person, etc. )
+    #   ovthresh: the threshold for bounding box overlap 
     def voc_eval(detpath,
                  annopath,
                  imagesetfile,
@@ -105,29 +107,6 @@
                  cachedir,
                  ovthresh=0.5,
                  use_07_metric=False):
-        """rec, prec, ap = voc_eval(detpath,
-                                    annopath,
-                                    imagesetfile,
-                                    classname,
-                                    [ovthresh],
-                                    [use_07_metric])
-        Top level function that does the PASCAL VOC evaluation.
-        detpath: Path to detections
-            detpath.format(classname) should produce the detection results file.
-        annopath: Path to annotations
-            annopath.format(imagename) should be the xml annotations file.
-        imagesetfile: Text file containing the list of images, one image per line.
-        classname: Category name (duh)
-        cachedir: Directory for caching the annotations
-        [ovthresh]: Overlap threshold (default = 0.5)
-        [use_07_metric]: Whether to use VOC07's 11 point AP computation
-            (default False)
-        """
-        # assumes detections are in detpath.format(classname)
-        # assumes annotations are in annopath.format(imagename)
-        # assumes imagesetfile is a text file with each line an image name
-        # cachedir caches the annotations in a pickle file
-
         # first load gt
         if not os.path.isdir(cachedir):
             os.mkdir(cachedir)
