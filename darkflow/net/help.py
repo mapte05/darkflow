@@ -30,8 +30,12 @@ def load_from_ckpt(self):
     load_point = os.path.join(self.FLAGS.backup, self.meta['name'])
     load_point = '{}-{}'.format(load_point, self.FLAGS.load)
     self.say('Loading from {}'.format(load_point))
-    try: self.saver.restore(self.sess, load_point)
-    except: load_old_graph(self, load_point)
+    try:
+        print("WELL...")
+        self.saver.restore(self.sess, load_point)
+    except:
+        print("YOU ARE A LIAR")
+        load_old_graph(self, load_point)
 
 def say(self, *msgs):
     if not self.FLAGS.verbalise:
